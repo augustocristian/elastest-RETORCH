@@ -14,6 +14,15 @@
           <target>1.8</target>
         </configuration>
       </plugin>
+      
     </plugins>
+   
   </build>
+  <dependencies>
+   <dependency>
+    <groupId>com.github.javaparser</groupId>
+    <artifactId>javaparser-core</artifactId>
+    <version>3.14.11</version>
+</dependency>
+  </dependencies>
 </project>
