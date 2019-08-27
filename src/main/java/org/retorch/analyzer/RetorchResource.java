@@ -2,11 +2,11 @@ package main.java.org.retorch.analyzer;
 
 import java.util.LinkedList;
 
-public class Resource {
+public class RetorchResource {
 	
 	private String name;
 	private LinkedList<String> attributes;
-	public Resource(String name) {
+	public RetorchResource(String name) {
 		attributes= new LinkedList<String>();
 		this.name=name;
 		

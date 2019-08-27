@@ -3,8 +3,12 @@ package main;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
+
+import javax.annotation.Resource;
+
 import main.java.org.retorch.analyzer.CommentJavaDocAnalyzer;
 import main.java.org.retorch.analyzer.DirExplorer;
+import main.java.org.retorch.analyzer.RetorchResource;
 import main.java.org.retorch.analyzer.RetorchResourceStructure;
 
 import com.github.javaparser.JavaParser;
@@ -30,6 +34,19 @@ String pathold = "C:\\Users\\crist\\Desktop\\full-teaching-tunon-tests\\e2e-test
 		//CommentJavaDocAnalyzer.printallComments(teacherpath);
 		
 		LinkedList<RetorchResourceStructure> lista =CommentJavaDocAnalyzer.getResources(teacherpath);
+		for (RetorchResourceStructure it :lista) {
+			System.out.print(String.format("Test Name : %s  \n Resources: \n",it.getTestname()));
+			for(RetorchResource res:it.getListResources()) {
+				System.out.print(String.format("Name : %s  Type : ",res.getName() ));
+				for (String type:res.getAttributes()) {
+					System.out.print(type + ",");
+				}
+				System.out.print("\n");
+				
+			}
+			
+			
+		}
 		System.out.print("prub");
 	}
 

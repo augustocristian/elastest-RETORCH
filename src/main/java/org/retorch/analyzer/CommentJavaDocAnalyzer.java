@@ -128,16 +128,10 @@ public class CommentJavaDocAnalyzer {
 						super.visit(comment, arg);
 						String title = null;
 						if (comment.getCommentedNode().isPresent()) {
-							title = String.format("%s (%s)", describe(comment.getCommentedNode().get()), path);
+							getTestName(comment.getCommentedNode().get(), comment, listresourcestestrequired);
 
 						}
-						//  System.out.println(title);
-						//System.out.println(Strings.repeat("=", title.length()));
-						//  System.out.println(comment);
-					listresourcestestrequired.add(analyzeComment(title,comment.toString()));
-
-						//  Expression expression = getParamater(comment.getCommentedNode().get(), "retorch");
-
+				
 						
 					}
 				}.visit(JavaParser.parse(file), null);
@@ -149,7 +143,22 @@ public class CommentJavaDocAnalyzer {
 		return listresourcestestrequired;
 	}
 
+	private static String getTestName(Node node,JavadocComment comment,LinkedList<RetorchResourceStructure> listresourcestestrequired) {
+		if (node instanceof MethodDeclaration) {
+			MethodDeclaration methodDeclaration = (MethodDeclaration)node;
+			listresourcestestrequired.add(analyzeComment(String.format("%s",methodDeclaration.getName()),comment.toString()));
+			return "Method " + methodDeclaration.getName();
 
+		}
+		else {
+			
+		}
+		return node.toString();
+
+
+
+
+	}
 
 	private static final String VALUE = "value";
 
