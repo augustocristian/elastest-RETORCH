@@ -3,6 +3,8 @@ package main;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -47,7 +49,18 @@ String pathold = "C:\\Users\\crist\\Desktop\\full-teaching-tunon-tests\\e2e-test
 			
 			
 		}
-		System.out.print("prub");
+	
+		 Map<String,LinkedList <String>> pruebados= CommentJavaDocAnalyzer.getGroupedResources(lista);
+	System.out.print("end");
+	
+	String salida=CommentJavaDocAnalyzer.getStagesElastest(pruebados,"openvidu");
+	
+	System.out.print(salida);
+
 	}
+	
+	
+	
+	
 
 }

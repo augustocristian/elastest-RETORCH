@@ -21,5 +21,9 @@ public class RetorchResource {
 	public String getName() {
 		return name;
 	}
-
+	
+public boolean equals(RetorchResource a) {
+	return this.name.equals(a.getName())&&this.attributes.containsAll(a.attributes);
+		
+	}
 }

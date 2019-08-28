@@ -1,10 +1,16 @@
 package main.java.org.retorch.analyzer;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 import java.util.stream.Collectors;
+
+import javax.annotation.Resource;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.Node;
@@ -131,15 +137,15 @@ public class CommentJavaDocAnalyzer {
 							getTestName(comment.getCommentedNode().get(), comment, listresourcestestrequired);
 
 						}
-				
-						
+
+
 					}
-				}.visit(JavaParser.parse(file), null);
+ 				}.visit(JavaParser.parse(file), null);
 			} catch (IOException e) {
 				new RuntimeException(e);
 			}
 		}).explore(projectDir);
-		
+
 		return listresourcestestrequired;
 	}
 
@@ -151,7 +157,7 @@ public class CommentJavaDocAnalyzer {
 
 		}
 		else {
-			
+
 		}
 		return node.toString();
 
@@ -203,6 +209,87 @@ public class CommentJavaDocAnalyzer {
 			}
 		}
 		return null;
+	}
+
+	public static Map<String,LinkedList <String>> getGroupedResources(List<RetorchResourceStructure> struct){
+		Map<String,LinkedList <String>> listoutput= new HashMap<String, LinkedList<String>>();
+		LinkedList<String> listtests;
+		for (RetorchResourceStructure item :struct ) {
+			for (RetorchResource res: item.listResources) {
+
+				for (String resattrib:res.getAttributes()) {
+					String resourcename= String.format("%s-%s", res.getName(),resattrib);
+					if(listoutput.containsKey(resourcename)) {
+						listtests= listoutput.get(resourcename);
+						listtests.add(item.testname);
+						listoutput.put(resourcename,listtests);
+					}
+					else {
+						listtests= new LinkedList<String>();
+						listtests.add(item.testname);
+						listoutput.put(resourcename,listtests);
+
+
+
+					}
+
+				}
+			}
+
+
+		}
+
+
+
+		return listoutput;
+
+	}
+
+	public static String getStagesElastest(Map<String,LinkedList <String>> GroupedResources,String resource) {
+
+		StringBuilder output= new StringBuilder();
+		StringBuilder testformatted= new StringBuilder();
+	    Properties prop=new Properties();
+	    try {
+	    FileInputStream ip= new FileInputStream("C:\\Users\\crist\\eclipse-workspace\\RETORCH\\src\\resources\\config.properties");
+
+	   
+			prop.load(ip);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		boolean init;
+		for (Map.Entry<String,LinkedList <String>> entry : GroupedResources.entrySet()) {
+			if(entry.getKey().contains(resource)) {
+				testformatted= new StringBuilder();
+				init=false;
+				for(String tests:entry.getValue()) {
+					if(init==false) {
+						init=true;
+						testformatted.append(tests);
+					}	
+					else {
+						testformatted.append(","+tests);
+
+					}
+				}
+				output.append(String.format("	stage(\"%s\") {\r\n" + 
+						"                echo 'Running test'\r\n" + 
+						"                mvnHome = %s + "+
+						"                sh \"'${mvnHome}/bin/mvn' -Dapp.url=https://\" + sutIp +\":5001/ -Dtest=%s -B -DforkCount=0 test\"\r\n" + 
+						"                step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])\r\n" + 
+						"         \r\n" + 
+						"        	} \n", entry.getKey(),prop.getProperty("MavenHome"),testformatted.toString()));
+
+				
+
+			}
+
+		}
+
+
+		return output.toString();
 	}
 
 
