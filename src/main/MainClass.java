@@ -22,19 +22,19 @@ import com.google.common.base.Strings;
 
 public class MainClass {
 	public static void main(String [] args) {
-String teacherpath="C:\\Users\\crist\\Desktop\\full-teaching-tunon-tests\\e2e-test\\no-Elastest\\src\\test\\java\\com\\fullteaching\\e2e\\no_elastest\\functional\\test\\teacher\\";
-String teacherclassname="CourseTeacherTest.java";		
-String pathold = "C:\\Users\\crist\\Desktop\\full-teaching-tunon-tests\\e2e-test\\no-Elastest\\src\\test\\java\\com\\fullteaching\\e2e\\no_elastest\\functional\\test\\";
-		
+		String teacherpath="C:\\Users\\crist\\Desktop\\full-teaching-tunon-tests\\e2e-test\\no-Elastest\\src\\test\\java\\com\\fullteaching\\e2e\\no_elastest\\functional\\test\\teacher\\";
+		String teacherclassname="CourseTeacherTest.java";		
+		String pathold = "C:\\Users\\crist\\Desktop\\full-teaching-tunon-tests\\e2e-test\\no-Elastest\\src\\test\\java\\com\\fullteaching\\e2e\\no_elastest\\functional\\test\\";
+
 		String className="UserTest.java";
 		LinkedList<String> listclases=CommentJavaDocAnalyzer.getProjectClasses(pathold,className);
 		for (String cla:listclases) {
 			//System.out.print(cla+"\n");
 		}
-	
-	
+
+
 		//CommentJavaDocAnalyzer.printallComments(teacherpath);
-		
+
 		LinkedList<RetorchResourceStructure> lista =CommentJavaDocAnalyzer.getResources(teacherpath);
 		for (RetorchResourceStructure it :lista) {
 			System.out.print(String.format("Test Name : %s  \n Resources: \n",it.getTestname()));
@@ -44,23 +44,23 @@ String pathold = "C:\\Users\\crist\\Desktop\\full-teaching-tunon-tests\\e2e-test
 					System.out.print(type + ",");
 				}
 				System.out.print("\n");
-				
+
 			}
-			
-			
+
+
 		}
-	
-		 Map<String,LinkedList <String>> pruebados= CommentJavaDocAnalyzer.getGroupedResources(lista);
-	System.out.print("end");
-	
-	String salida=CommentJavaDocAnalyzer.getStagesElastest(pruebados,"openvidu");
-	
-	System.out.print(salida);
+
+		Map<String,LinkedList <String>> pruebados= CommentJavaDocAnalyzer.getGroupedResources(lista);
+		System.out.print("end");
+
+		String salida=CommentJavaDocAnalyzer.getStagesElastest(pruebados,"openvidu");
+
+		System.out.print(salida);
 
 	}
-	
-	
-	
-	
+
+
+
+
 
 }

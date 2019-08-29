@@ -140,7 +140,7 @@ public class CommentJavaDocAnalyzer {
 
 
 					}
- 				}.visit(JavaParser.parse(file), null);
+				}.visit(JavaParser.parse(file), null);
 			} catch (IOException e) {
 				new RuntimeException(e);
 			}
@@ -249,11 +249,11 @@ public class CommentJavaDocAnalyzer {
 
 		StringBuilder output= new StringBuilder();
 		StringBuilder testformatted= new StringBuilder();
-	    Properties prop=new Properties();
-	    try {
-	    FileInputStream ip= new FileInputStream("C:\\Users\\crist\\eclipse-workspace\\RETORCH\\src\\resources\\config.properties");
+		Properties prop=new Properties();
+		try {
+			FileInputStream ip= new FileInputStream("C:\\Users\\crist\\eclipse-workspace\\RETORCH\\src\\resources\\config.properties");
 
-	   
+
 			prop.load(ip);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -282,7 +282,7 @@ public class CommentJavaDocAnalyzer {
 						"         \r\n" + 
 						"        	} \n", entry.getKey(),prop.getProperty("MavenHome"),testformatted.toString()));
 
-				
+
 
 			}
 
