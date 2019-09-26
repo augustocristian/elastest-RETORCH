@@ -251,7 +251,7 @@ public class CommentJavaDocAnalyzer {
 		StringBuilder testformatted= new StringBuilder();
 		Properties prop=new Properties();
 		try {
-			FileInputStream ip= new FileInputStream("C:\\Users\\crist\\eclipse-workspace\\RETORCH\\src\\resources\\config.properties");
+			FileInputStream ip= new FileInputStream(".\\src\\resources\\config.properties");
 
 
 			prop.load(ip);
