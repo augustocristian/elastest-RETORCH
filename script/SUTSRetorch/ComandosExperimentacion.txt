@@ -31,6 +31,7 @@ start mvn -Dapp.url=https://localhost:5001/ -Dtest=LoggedForumTest#forumLoadEntr
 start mvn -Dapp.url=https://localhost:5001/ -Dtest=LoggedLinksTests#spiderLoggedTest -B -DforkCount=0 test
 start mvn -Dapp.url=https://localhost:5001/ -Dtest=UserTest#loginTest -B -DforkCount=0 test
 
+
 Instance 2 FULLTEACHING MEDIUM
 
 mvn -Dapp.url=https://localhost:5001/ -Dtest=CourseTeacherTest#teacherCreateAndDeleteCourseTest,CourseTeacherTest#teacherEditCourseValues,CourseTeacherTest#teacherDeleteCourseTest,LoggedForumTest#forumNewEntryTest,LoggedForumTest#forumNewCommentTest,LoggedForumTest#forumNewReply2CommentTest,FullTeachingTestE2EREST#courseRestOperations,FullTeachingTestE2EREST#courseInfoRestOperations,FullTeachingTestE2EREST#sessionRestOperations,FullTeachingTestE2EREST#forumRestOperations,FullTeachingTestE2EREST#filesRestOperations -B -DforkCount=0 test
@@ -85,6 +86,8 @@ mvn -Dapp.url=https://localhost:5001/ -Dtest=LoggedForumTest#forumNewReply2Comme
 Instance 4 FULLTEACHING HEAVY
 mvn -Dapp.url=https://localhost:5001/ -Dtest=FullTeachingTestE2EChat#oneToOneChatInSessionChrome,FullTeachingTestE2EVideoSession#oneToOneVideoAudioSessionChrome,LoggedVideoSession#sessionTest,FullTeachingTestE2EREST#attendersRestOperations -B -DforkCount=0 test
 
+PARA PASAR ARCHIVOS DEL MONITOR DE RENDIMIENTO A teacherEditCourseValues
+relog DataCollector01.blg -f csv -o output.csv
 
 
 
