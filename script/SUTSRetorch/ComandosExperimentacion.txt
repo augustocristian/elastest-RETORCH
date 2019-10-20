@@ -1,0 +1,3 @@
+mvn -Dtest=forumLoadEntriesTest,forumNewEntryTest test
+
+mvn -Dtest=LoggedForumTest#forumLoadEntriesTes test
