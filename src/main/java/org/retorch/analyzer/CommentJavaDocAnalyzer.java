@@ -8,9 +8,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.Node;
@@ -26,12 +25,16 @@ import com.github.javaparser.ast.expr.MemberValuePair;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.google.common.base.Strings;
 
+import main.MainClass;
+
 public class CommentJavaDocAnalyzer {
+	static Logger log;
+	private CommentJavaDocAnalyzer() {};
 
-	public static LinkedList<String> getProjectClasses(String path,String className){
-		LinkedList< String> clasessnames= new LinkedList<String>();
+	public static List<String> getProjectClasses(String path,String className){
+		LinkedList< String> clasessnames= new LinkedList<>();
 
-		String rootpath=path.substring(0, path.lastIndexOf("\\"));
+		String rootpath=path.substring(0, path.lastIndexOf('\\'));
 		File classfolder = new File(rootpath);
 		File[] listofallfiles = classfolder.listFiles();
 		if(listofallfiles.length==0) {
@@ -54,7 +57,7 @@ public class CommentJavaDocAnalyzer {
 
 	}
 	private static String getClassNameForSource(String sourceFileName, String analyzedClassName) {
-		int lastDot = analyzedClassName.lastIndexOf(".");
+		int lastDot = analyzedClassName.lastIndexOf('.');
 		if (lastDot == -1) {
 			return null;
 		}
@@ -63,6 +66,7 @@ public class CommentJavaDocAnalyzer {
 
 
 	public static void printallComments(String relativepath) {
+		log = Logger.getLogger(MainClass.class.getName());
 
 		File projectDir = new File(relativepath);
 		new DirExplorer((level, path, file) -> path.endsWith(".java"), (level, path, file) -> {
@@ -77,13 +81,13 @@ public class CommentJavaDocAnalyzer {
 						} else {
 							title = String.format("No element associated (%s)", path);
 						}
-						System.out.println(title);
-						System.out.println(Strings.repeat("=", title.length()));
-						System.out.println(comment);
+						log.fine(title);
+						log.fine(Strings.repeat("=", title.length()));
+						log.fine(comment.toString());
 					}
 				}.visit(JavaParser.parse(file), null);
 			} catch (IOException e) {
-				new RuntimeException(e);
+				throw new RuntimeException(e);
 			}
 		}).explore(projectDir);
 	}
@@ -123,8 +127,8 @@ public class CommentJavaDocAnalyzer {
 	}
 
 
-	public static LinkedList<RetorchResourceStructure> getResources(String relativepath) {
-		LinkedList<RetorchResourceStructure> listresourcestestrequired= new LinkedList<RetorchResourceStructure>();
+	public static List<RetorchResourceStructure> getResources(String relativepath) {
+		LinkedList<RetorchResourceStructure> listresourcestestrequired= new LinkedList<>();
 		File projectDir = new File(relativepath);
 		new DirExplorer((level, path, file) -> path.endsWith(".java"), (level, path, file) -> {
 			try {
@@ -132,7 +136,7 @@ public class CommentJavaDocAnalyzer {
 					@Override
 					public void visit(JavadocComment comment, Object arg) {
 						super.visit(comment, arg);
-						String title = null;
+				
 						if (comment.getCommentedNode().isPresent()) {
 							getTestName(comment.getCommentedNode().get(), comment, listresourcestestrequired);
 
@@ -142,7 +146,7 @@ public class CommentJavaDocAnalyzer {
 					}
 				}.visit(JavaParser.parse(file), null);
 			} catch (IOException e) {
-				new RuntimeException(e);
+				throw new RuntimeException(e);
 			}
 		}).explore(projectDir);
 
@@ -156,9 +160,7 @@ public class CommentJavaDocAnalyzer {
 			return "Method " + methodDeclaration.getName();
 
 		}
-		else {
-
-		}
+	
 		return node.toString();
 
 
@@ -170,6 +172,7 @@ public class CommentJavaDocAnalyzer {
 
 
 	public static RetorchResourceStructure analyzeComment(String testname,String comment) {
+		log = Logger.getLogger(MainClass.class.getName());
 		String[] lines = comment.split("\n");
 		int i=0;
 		RetorchResourceStructure struct=null;
@@ -179,7 +182,7 @@ public class CommentJavaDocAnalyzer {
 				linea=linea.replace("/", "");
 				linea=linea.replace("@retorch ","" );
 				struct= new RetorchResourceStructure(testname, linea);
-				System.out.printf("linea %d "+linea,i);
+				log.fine(String.format("linea %d ",i));
 
 			}
 			i++;
@@ -212,7 +215,7 @@ public class CommentJavaDocAnalyzer {
 	}
 
 	public static Map<String,LinkedList <String>> getGroupedResources(List<RetorchResourceStructure> struct){
-		Map<String,LinkedList <String>> listoutput= new HashMap<String, LinkedList<String>>();
+		Map<String,LinkedList <String>> listoutput= new HashMap<>();
 		LinkedList<String> listtests;
 		for (RetorchResourceStructure item :struct ) {
 			for (RetorchResource res: item.listResources) {
@@ -225,7 +228,7 @@ public class CommentJavaDocAnalyzer {
 						listoutput.put(resourcename,listtests);
 					}
 					else {
-						listtests= new LinkedList<String>();
+						listtests= new LinkedList<>();
 						listtests.add(item.testname);
 						listoutput.put(resourcename,listtests);
 
@@ -245,7 +248,7 @@ public class CommentJavaDocAnalyzer {
 
 	}
 
-	public static String getStagesElastest(Map<String,LinkedList <String>> GroupedResources,String resource) {
+	public static String getStagesElastest(Map<String,LinkedList <String>> groupedResources,String resource) {
 
 		StringBuilder output= new StringBuilder();
 		StringBuilder testformatted= new StringBuilder();
@@ -256,16 +259,16 @@ public class CommentJavaDocAnalyzer {
 
 			prop.load(ip);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		boolean init;
-		for (Map.Entry<String,LinkedList <String>> entry : GroupedResources.entrySet()) {
+		for (Map.Entry<String,LinkedList <String>> entry : groupedResources.entrySet()) {
 			if(entry.getKey().contains(resource)) {
 				testformatted= new StringBuilder();
 				init=false;
 				for(String tests:entry.getValue()) {
-					if(init==false) {
+					if(!init) {
 						init=true;
 						testformatted.append(tests);
 					}	

@@ -1,9 +1,10 @@
 package main.java.org.retorch.analyzer;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public class RetorchResourceStructure {
-	LinkedList <RetorchResource> listResources;
+	List <RetorchResource> listResources;
 	String testname;
 	public RetorchResourceStructure(String TestName,String resources) {
 		this.listResources= new LinkedList<RetorchResource>();
@@ -35,10 +36,10 @@ public class RetorchResourceStructure {
 			listResources.add(current);
 		}
 	}
-	public LinkedList<RetorchResource> getListResources() {
+	public List<RetorchResource> getListResources() {
 		return listResources;
 	}
-	public void setListResources(LinkedList<RetorchResource> listResources) {
+	public void setListResources(List<RetorchResource> listResources) {
 		this.listResources = listResources;
 	}
 	public String getTestname() {
