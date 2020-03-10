@@ -6,9 +6,9 @@ import java.util.List;
 public class RetorchResourceStructure {
 	List <RetorchResource> listResources;
 	String testname;
-	public RetorchResourceStructure(String TestName,String resources) {
-		this.listResources= new LinkedList<RetorchResource>();
-		this.testname=TestName;
+	public RetorchResourceStructure(String testName,String resources) {
+		this.listResources= new LinkedList<>();
+		this.testname=testName;
 		RetorchResource current=null;
 		String []  splitedresources= resources.split(" ");
 		for (String dat:splitedresources) {
@@ -25,8 +25,8 @@ public class RetorchResourceStructure {
 			}
 
 			else {
-				
-				current.addAtribute(dat);
+				if(current!=null)
+					current.addAtribute(dat);
 
 			}
 			}
