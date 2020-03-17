@@ -7,7 +7,7 @@ import org.junit.runner.RunWith;
 
 import in2test.retorch.executor.RetorchTestRunner;
 	@RunWith(RetorchTestRunner.class)
-public class HardTestCases {
+public class HeavyTestCases {
 
 	    @Test
 	    public void testOne() {

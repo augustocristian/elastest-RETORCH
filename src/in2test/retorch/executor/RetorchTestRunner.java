@@ -1,20 +1,21 @@
 package in2test.retorch.executor;
-
-import java.lang.annotation.Annotation;
+import org.junit.Test;
 import java.lang.reflect.Method;
+import java.util.LinkedList;
 
 import org.junit.runner.Description;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
 
-import junit.framework.Test;
+import in2test.retorch.classes.TestCaseClass;
 
 public class RetorchTestRunner  extends Runner {
 		 
 	    private Class testClass;
-	    public RetorchTestRunner(Class testClass) {
+	    private LinkedList<TestCaseClass>testCases;
+	    public RetorchTestRunner(LinkedList<TestCaseClass> testClass) {
 	        super();
-	        this.testClass = testClass;
+	        this.testCases = testClass;
 	    }
 	 
 	    @Override
@@ -25,21 +26,34 @@ public class RetorchTestRunner  extends Runner {
 	 
 	    @Override
 	    public void run(RunNotifier notifier) {
+	    	
+	    	for (TestCaseClass tc : testCases) {
+	    	String testName=tc.name;
+	    	testClass=tc.testcase;
 	        System.out.println("running the tests from MyRunner: " + testClass);
 	        try {
 	            Object testObject = testClass.newInstance();
+	            
 	            for (Method method : testClass.getMethods()) {
-	                if (method.isAnnotationPresent((Class<? extends Annotation>) Test.class)) {
+	            	boolean nameequal=method.getName().equals(testName);
+	            	
+	                if (method.isAnnotationPresent( Test.class)&&nameequal) {
+	                	
 	                    notifier.fireTestStarted(Description
 	                      .createTestDescription(testClass, method.getName()));
+	                    
 	                    method.invoke(testObject);
+	                    
 	                    notifier.fireTestFinished(Description
 	                      .createTestDescription(testClass, method.getName()));
+	                    
+	                    
 	                }
 	            }
 	        } catch (Exception e) {
 	            throw new RuntimeException(e);
 	        }
+	    	}
 	    }
 	}
 	

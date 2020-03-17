@@ -2,6 +2,9 @@ package in2test.retorch.main;
 import java.util.LinkedList;
 
 import in2test.retorch.classes.*;
+import in2test.retorch.dummytests.HeavyTestCases;
+import in2test.retorch.dummytests.LightTestCases;
+import in2test.retorch.dummytests.MediumTestCases;
 import in2test.retorch.executor.RetorchExecutor;
 
 public class RetorchMainClass {
@@ -73,21 +76,38 @@ public class RetorchMainClass {
 
 		SystemClass systemLight= new SystemClass("LightSystem");
 		systemLight.resources.add(openviduLight);
-
-
+		TestCaseClass testCaseLight= new TestCaseClass("testOne", LightTestCases.class);
+		systemLight.testcases.add(testCaseLight);
+		
+		
+		
 		SystemClass systemMedium= new SystemClass("MediumSystem");
 		systemMedium.resources.add(openviduMedium);
-
+		TestCaseClass testCaseMedium= new TestCaseClass("testThree", MediumTestCases.class);
+		systemMedium.testcases.add(testCaseMedium);
 		
+
+
 		SystemClass systemHeavy= new SystemClass("HeavySystem");
 		systemHeavy.resources.add(openviduMedium);
+		TestCaseClass testCaseHeavy= new TestCaseClass("testTwo", HeavyTestCases.class);
+		systemMedium.testcases.add(testCaseHeavy);
 		
-		
+
+
 		executor.retorchSystems.add(systemLight);
-		
+
 		executor.retorchSystems.add(systemMedium);
-		
+
 		executor.retorchSystems.add(systemHeavy);
+		
+		executor.executeTestCases();
+		
+		
+	
+
+
+
 
 
 
