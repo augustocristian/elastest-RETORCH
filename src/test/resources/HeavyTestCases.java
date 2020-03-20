@@ -1,4 +1,4 @@
-package main.java.dummytests;
+package test.resources;
 
 import static org.junit.Assert.assertEquals;
 
