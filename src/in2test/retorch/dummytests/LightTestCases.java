@@ -5,8 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import in2test.retorch.executor.RetorchTestRunner;
-	@RunWith(RetorchTestRunner.class)
+
 public class LightTestCases {
 
 	    @Test
