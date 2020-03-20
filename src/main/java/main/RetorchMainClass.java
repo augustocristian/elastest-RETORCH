@@ -1,11 +1,14 @@
-package in2test.retorch.main;
+package main.java.main;
 import java.util.LinkedList;
 
-import in2test.retorch.classes.*;
-import in2test.retorch.dummytests.HeavyTestCases;
-import in2test.retorch.dummytests.LightTestCases;
-import in2test.retorch.dummytests.MediumTestCases;
-import in2test.retorch.executor.RetorchExecutor;
+import main.java.classes.ElasticityModelClass;
+import main.java.classes.ResourceClass;
+import main.java.classes.SystemClass;
+import main.java.classes.TestCaseClass;
+import main.java.dummytests.HeavyTestCases;
+import main.java.dummytests.LightTestCases;
+import main.java.dummytests.MediumTestCases;
+import main.java.executor.RetorchExecutor;
 
 public class RetorchMainClass {
 

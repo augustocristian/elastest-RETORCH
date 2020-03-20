@@ -1,6 +1,4 @@
-package in2test.retorch.classes;
-
-import in2test.retorch.dummytests.HeavyTestCases;
+package main.java.classes;
 
 public class TestCaseClass {
 	public String name;

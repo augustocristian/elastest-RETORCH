@@ -1,4 +1,4 @@
-package in2test.retorch.classes;
+package main.java.classes;
 
 import java.util.LinkedList;
 

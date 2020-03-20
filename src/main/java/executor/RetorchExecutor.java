@@ -1,4 +1,4 @@
-package in2test.retorch.executor;
+package main.java.executor;
 
 import java.lang.reflect.Method;
 import java.util.LinkedList;
@@ -10,8 +10,8 @@ import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunNotifier;
 
-import in2test.retorch.classes.SystemClass;
-import in2test.retorch.classes.TestCaseClass;
+import main.java.classes.SystemClass;
+import main.java.classes.TestCaseClass;
 
 public class RetorchExecutor {
 	RunNotifier notifier;

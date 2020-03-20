@@ -1,4 +1,4 @@
-package in2test.retorch.dummytests;
+package main.java.dummytests;
 
 import static org.junit.Assert.assertEquals;
 

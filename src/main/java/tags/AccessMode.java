@@ -1,4 +1,4 @@
-package in2test.retorch.tags;
+package main.java.tags;
 
 import java.lang.annotation.Documented;
 
