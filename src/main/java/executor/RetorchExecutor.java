@@ -2,6 +2,7 @@ package main.java.executor;
 
 import java.lang.reflect.Method;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
@@ -12,6 +13,7 @@ import org.junit.runner.notification.RunNotifier;
 
 import main.java.classes.SystemClass;
 import main.java.classes.TestCaseClass;
+import main.java.data.structures.InterTestOrchestrationScript;
 
 public class RetorchExecutor {
 	RunNotifier notifier;
@@ -68,6 +70,22 @@ public class RetorchExecutor {
 
 
 		}
+	}
+	
+	
+	
+	public List<InterTestOrchestrationScript> generateMavenScripts() {
+
+		LinkedList<InterTestOrchestrationScript > listScripts = new  LinkedList<>();
+		for (SystemClass systemretorch : retorchSystems) {
+
+			
+			}
+
+
+		
+		return listScripts;
+		
 	}
 
 
