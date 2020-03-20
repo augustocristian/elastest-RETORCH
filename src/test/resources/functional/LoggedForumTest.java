@@ -3,9 +3,10 @@ package test.resources.functional;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
-public class LoggedForumTest {
+@Ignore	public class LoggedForumTest {
 	@Test
 	public void forumLoadEntriesTest() {
 

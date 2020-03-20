@@ -64,7 +64,7 @@ public class CommentJavaDocAnalyzer {
 
 
 	public static void printallComments(String relativepath) {
-	//	log = Logger.getLogger(MainClass.class.getName());
+
 
 		File projectDir = new File(relativepath);
 		new DirExplorer((level, path, file) -> path.endsWith(".java"), (level, path, file) -> {
@@ -170,7 +170,7 @@ public class CommentJavaDocAnalyzer {
 
 
 	public static RetorchResourceStructure analyzeComment(String testname,String comment) {
-	//	log = Logger.getLogger(MainClass.class.getName());
+	
 		String[] lines = comment.split("\n");
 		int i=0;
 		RetorchResourceStructure struct=null;

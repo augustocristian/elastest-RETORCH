@@ -2,9 +2,10 @@ package test.resources.functional;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
-public class LoggedLinksTests  {
+@Ignore	public class LoggedLinksTests  {
 
 
 

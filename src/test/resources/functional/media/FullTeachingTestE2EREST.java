@@ -19,54 +19,56 @@ package test.resources.functional.media;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
-public class FullTeachingTestE2EREST {
+@Ignore	public class FullTeachingTestE2EREST {
 
+    	
 	@Test
-	void courseRestOperations() throws Exception {
+	void courseRestOperations()  {
+
+		assertEquals(true, true);
+
+	}
+    	
+	@Test
+	void courseInfoRestOperations()  {
+
+		assertEquals(true, true);
+	}
+
+    	
+	@Test
+	void sessionRestOperations() {
+
+		assertEquals(true, true);
+	}
+
+    	
+	@Test
+	void forumRestOperations() {
 
 		assertEquals(true, true);
 
 	}
 
+    	
 	@Test
-	void courseInfoRestOperations() throws Exception {
+	void filesRestOperations()  {
 
 		assertEquals(true, true);
 	}
 
-
+    	
 	@Test
-	void sessionRestOperations() throws Exception {
-
-		assertEquals(true, true);
-	}
-
-
-	@Test
-	void forumRestOperations() throws Exception {
+	void attendersRestOperations()  {
 
 		assertEquals(true, true);
 
 	}
 
 
-	@Test
-	void filesRestOperations() throws Exception {
-
-		assertEquals(true, true);
-	}
-
-
-	@Test
-	void attendersRestOperations() throws Exception {
-
-		assertEquals(true, true);
-
-	}
-
-	/*** Auxiliary methods ***/
 
 
 

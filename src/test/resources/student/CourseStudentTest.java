@@ -2,9 +2,10 @@ package test.resources.student;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
-public class CourseStudentTest {
+@Ignore	public class CourseStudentTest {
 
 
 	@Test

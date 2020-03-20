@@ -19,11 +19,12 @@ package test.resources.functional.media;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
-public class FullTeachingTestE2EVideoSession  {
+@Ignore	public class FullTeachingTestE2EVideoSession  {
 
-
+    @Ignore	
 	@Test
 	void oneToOneVideoAudioSessionChrome() throws Exception {
 		assertEquals(true, true);
