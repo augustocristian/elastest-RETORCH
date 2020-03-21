@@ -81,6 +81,10 @@ public class RetorchExecutor {
 		LinkedList<InterTestOrchestrationScript > listScripts = new  LinkedList<>();
 		for (SystemClass systemretorch : retorchSystems) {
 
+		InterTestOrchestrationScript dummy = new InterTestOrchestrationScript();
+		dummy.resourcesCompose="";
+		dummy.mavenCommand=getMvnScript(systemretorch);
+		listScripts.add(dummy);
 
 		}
 
