@@ -2,10 +2,12 @@ package main.java.classes;
 
 public class TestCaseClass {
 	public String name;
-	public Class testcase;
+	public Class testcClass;
+	public AccessModeClass accessMode;
 	
-	public TestCaseClass(String nametestcase,Class classTestCase) {
+	public TestCaseClass(String nametestcase,Class classTestCase,AccessModeClass accessMode) {
 		this.name=nametestcase;
-		this.testcase=classTestCase;
+		this.testcClass=classTestCase;
+		this.accessMode=accessMode;
 	}
 }

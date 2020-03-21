@@ -9,5 +9,6 @@ public class ResourceClass {
 	public ResourceClass hierarchyParent;
 	public LinkedList<ResourceClass> reemplazable;
 	public ElasticityModelClass elasticityModel;
+	public AccessModeClass reourceAccessMode;
 	
 }

@@ -5,24 +5,88 @@ import static org.junit.Assert.assertEquals;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
+import main.java.classes.AccessModeClass;
 import main.java.classes.ElasticityModelClass;
 import main.java.classes.ResourceClass;
 import main.java.classes.SystemClass;
 import main.java.classes.TestCaseClass;
 import main.java.data.structures.InterTestOrchestrationScript;
 import main.java.executor.RetorchExecutor;
-import test.resources.HeavyTestCases;
-import test.resources.LightTestCases;
-import test.resources.MediumTestCases;
+
+import test.resources.functional.LoggedForumTest;
+import test.resources.functional.LoggedLinksTests;
+import test.resources.functional.media.FullTeachingTestE2EChat;
+import test.resources.functional.media.FullTeachingTestE2EREST;
+import test.resources.functional.media.FullTeachingTestE2EVideoSession;
+import test.resources.functional.media.LoggedVideoSession;
+import test.resources.student.CourseStudentTest;
+import test.resources.teacher.CourseTeacherTest;
 
 public class TestExecutor {
 
 
-
 	@Test
-	public void testExecutorGenerateMavenCode() {
+	public void testExecutorgetMvnScript() {
+
+		ResourceClass openvidu = new ResourceClass();
+		openvidu.resourceID = "Openvidu";
+		openvidu.reemplazable=new LinkedList<ResourceClass>();
+
+
+		//Diferent Elasticity Models
+
+		ElasticityModelClass elasModelHeavy= new ElasticityModelClass();
+		elasModelHeavy.elasticityID= "OpenViduHeavyElastModel";
+		elasModelHeavy.elasticity=1;
+		elasModelHeavy.elasticityCost=Double.MAX_VALUE;
+		//Different Resources
+		ResourceClass openviduHeavy = new ResourceClass();
+		openviduHeavy.resourceID = "OpenviduHeavy";
+		openviduHeavy.hierarchyParent=openvidu;
+		openviduHeavy.reemplazable=new LinkedList<ResourceClass>();
+		openviduHeavy.elasticityModel=elasModelHeavy;
+
+
+		RetorchExecutor executor =  new RetorchExecutor();
+
+		SystemClass systemHeavy= new SystemClass("HeavySystem");
+		systemHeavy.resources.add(openviduHeavy);
+		//Adding Heavy test cases
+
+		//AccessMode for the Light Resources
+
+		AccessModeClass accessModeHeavy = new AccessModeClass();
+		accessModeHeavy.sharing=false;
+		accessModeHeavy.concurrency=1;
+		accessModeHeavy.resource=openviduHeavy;
+		accessModeHeavy.typeofAccessMode=AccessModeClass.type.READWRITE;
+
+		//End AccessMode
+		
+		systemHeavy.testcases.add(new  TestCaseClass("oneToOneChatInSessionChrome",FullTeachingTestE2EChat.class,accessModeHeavy ));
+		systemHeavy.testcases.add(new  TestCaseClass("oneToOneVideoAudioSessionChrome",FullTeachingTestE2EVideoSession.class,accessModeHeavy ));
+		systemHeavy.testcases.add(new  TestCaseClass("sessionTest",LoggedVideoSession.class,accessModeHeavy ));
+		systemHeavy.testcases.add(new  TestCaseClass("attendersRestOperations",FullTeachingTestE2EREST.class,accessModeHeavy ));
+
+		executor.retorchSystems.add(systemHeavy);
+
+		String expectedOutput = "mvn -Dapp.url=https://localhost:5001/ -Dtest=FullTeachingTestE2EChat#oneToOneChatInSessionChrome,"
+				+ "FullTeachingTestE2EVideoSession#oneToOneVideoAudioSessionChrome,LoggedVideoSession#sessionTest,"
+				+ "FullTeachingTestE2EREST#attendersRestOperations -B -DforkCount=0 test\r\n" ;
+		String output = executor.getMvnScript(systemHeavy);
+		assertEquals(expectedOutput, output);
+
+
+
+	}
+
+
+
+	@Test 
+	@Ignore public void testExecutorGenerateMavenCode() {
 
 
 
@@ -93,28 +157,80 @@ public class TestExecutor {
 
 		SystemClass systemLight= new SystemClass("LightSystem");
 		systemLight.resources.add(openviduLight);
-		
-		
+		//AccessMode for the Light Resources
+
+		AccessModeClass accessModeLight = new AccessModeClass();
+		accessModeLight.sharing=true;
+		accessModeLight.concurrency=4;
+		accessModeLight.resource=openviduLight;
+		accessModeLight.typeofAccessMode=AccessModeClass.type.READONLY;
+
+		//End AccessMode
+
 		//Adding Light TestCases
-		TestCaseClass testCaseLight= new TestCaseClass("testOne", LightTestCases.class);
-		systemLight.testcases.add(testCaseLight);
+		systemLight.testcases.add(new  TestCaseClass("teacherCourseMainTest",CourseTeacherTest.class,accessModeLight ));
+		systemLight.testcases.add(new  TestCaseClass("studentCourseMainTest",CourseStudentTest.class,accessModeLight ));
+		systemLight.testcases.add(new  TestCaseClass("forumLoadEntriesTest",LoggedForumTest.class,accessModeLight ));		
+		systemLight.testcases.add(new  TestCaseClass("spiderLoggedTest",LoggedLinksTests.class,accessModeLight ));
 
 
+
+
+		//End Adding Light Test Cases
 
 		SystemClass systemMedium= new SystemClass("MediumSystem");
 		systemMedium.resources.add(openviduMedium);
+
+		//AccessMode for the Light Resources
+
+				AccessModeClass accessModeMedium = new AccessModeClass();
+				accessModeMedium.sharing=false;
+				accessModeMedium.concurrency=1;
+				accessModeMedium.resource=openviduMedium;
+				accessModeMedium.typeofAccessMode=AccessModeClass.type.READWRITE;
+
+				//End AccessMode
+		
+		
 		
 		
 		//Adding Medium test cases
-		TestCaseClass testCaseMedium= new TestCaseClass("testThree", MediumTestCases.class);
-		systemMedium.testcases.add(testCaseMedium);
+		systemMedium.testcases.add(new  TestCaseClass("teacherCreateAndDeleteCourseTest",CourseTeacherTest.class,accessModeMedium ));
+		systemMedium.testcases.add(new  TestCaseClass("teacherEditCourseValues",CourseTeacherTest.class ,accessModeMedium));
+		systemMedium.testcases.add(new  TestCaseClass("teacherDeleteCourseTest",CourseTeacherTest.class,accessModeMedium ));
+		systemMedium.testcases.add(new  TestCaseClass("forumNewEntryTest",LoggedForumTest.class,accessModeMedium ));
+		systemMedium.testcases.add(new  TestCaseClass("forumNewCommentTest",LoggedForumTest.class,accessModeMedium ));
+		systemMedium.testcases.add(new  TestCaseClass("forumNewReply2CommentTest",LoggedForumTest.class,accessModeMedium ));
+		systemMedium.testcases.add(new  TestCaseClass("courseRestOperations",FullTeachingTestE2EREST.class,accessModeMedium ));
+		systemMedium.testcases.add(new  TestCaseClass("courseInfoRestOperations",FullTeachingTestE2EREST.class,accessModeMedium ));
+		systemMedium.testcases.add(new  TestCaseClass("sessionRestOperations",FullTeachingTestE2EREST.class,accessModeMedium ));
+		systemMedium.testcases.add(new  TestCaseClass("forumRestOperations",FullTeachingTestE2EREST.class,accessModeMedium ));
+		systemMedium.testcases.add(new  TestCaseClass("filesRestOperations",FullTeachingTestE2EREST.class,accessModeMedium ));
 
-		//End TestCases
+		//End Adding Medium Test Cases
 
 		SystemClass systemHeavy= new SystemClass("HeavySystem");
-		systemHeavy.resources.add(openviduMedium);
-		TestCaseClass testCaseHeavy= new TestCaseClass("testTwo", HeavyTestCases.class);
-		systemMedium.testcases.add(testCaseHeavy);
+		systemHeavy.resources.add(openviduHeavy);
+
+		//AccessMode for the Light Resources
+
+		AccessModeClass accessModeHeavy = new AccessModeClass();
+		accessModeHeavy.sharing=false;
+		accessModeHeavy.concurrency=1;
+		accessModeHeavy.resource=openviduHeavy;
+		accessModeHeavy.typeofAccessMode=AccessModeClass.type.READWRITE;
+
+		//End AccessMode
+		
+		
+		//Adding Heavy test cases
+
+		systemHeavy.testcases.add(new  TestCaseClass("oneToOneChatInSessionChrome",FullTeachingTestE2EChat.class,accessModeHeavy ));
+		systemHeavy.testcases.add(new  TestCaseClass("oneToOneVideoAudioSessionChrome",FullTeachingTestE2EVideoSession.class,accessModeHeavy ));
+		systemHeavy.testcases.add(new  TestCaseClass("sessionTest",LoggedVideoSession.class,accessModeHeavy ));
+		systemHeavy.testcases.add(new  TestCaseClass("attendersRestOperations",FullTeachingTestE2EREST.class,accessModeHeavy ));
+
+		//End Adding Heavy Test Cases
 
 
 
@@ -124,11 +240,11 @@ public class TestExecutor {
 
 		executor.retorchSystems.add(systemHeavy);
 
-		
+
 		outputExecutor=(LinkedList<InterTestOrchestrationScript>) executor.generateMavenScripts();
-		
-		
-		
+
+
+
 
 
 
@@ -143,8 +259,8 @@ public class TestExecutor {
 				+ "CourseStudentTest#studentCourseMainTest,LoggedForumTest#forumLoadEntriesTest,LoggedLinksTests#spiderLoggedTest,"
 				+ "UserTest#loginTest -B -DforkCount=0 test\r\n" ;
 		scriptTestsLight.resourcesCompose="";
-		
-		
+
+
 		InterTestOrchestrationScript scriptTestsMedium = new InterTestOrchestrationScript();
 		scriptTestsMedium.mavenCommand= "mvn -Dapp.url=https://localhost:5001/ -Dtest=CourseTeacherTest#teacherCreateAndDeleteCourseTest,"
 				+ "CourseTeacherTest#teacherEditCourseValues,CourseTeacherTest#teacherDeleteCourseTest,LoggedForumTest#forumNewEntryTest,"
@@ -154,25 +270,25 @@ public class TestExecutor {
 				"\r\n" + 
 				"" ;
 		scriptTestsMedium.resourcesCompose="";
-		
+
 		InterTestOrchestrationScript scriptTestsHeavy = new InterTestOrchestrationScript();
 		scriptTestsHeavy.mavenCommand= "mvn -Dapp.url=https://localhost:5001/ -Dtest=FullTeachingTestE2EChat#oneToOneChatInSessionChrome,"
 				+ "FullTeachingTestE2EVideoSession#oneToOneVideoAudioSessionChrome,LoggedVideoSession#sessionTest,"
 				+ "FullTeachingTestE2EREST#attendersRestOperations -B -DforkCount=0 test\r\n" + 
 				"\r\n" ;
 		scriptTestsHeavy.resourcesCompose="";
-		
-		
-		
+
+
+
 		expectedoutput.add(scriptTestsLight);
 		expectedoutput.add(scriptTestsMedium);
 		expectedoutput.add(scriptTestsHeavy);
-		
-		
-				
+
+
+
 		//END
-		
-		
+
+
 		assertEquals(areIdenticalLists(outputExecutor, expectedoutput),true);
 
 
@@ -181,9 +297,12 @@ public class TestExecutor {
 
 
 	public boolean areIdenticalLists(List<InterTestOrchestrationScript> one ,List<InterTestOrchestrationScript> two ) {
-		if (one.size()!=two.size()) {
+		if (one.size()!=two.size()||!one.containsAll(two)) {
 			return false;
 		}
+
+
+
 
 
 		return true;
