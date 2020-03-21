@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.Test;
 
 import main.java.classes.AccessModeClass;
@@ -28,22 +28,118 @@ import test.resources.teacher.CourseTeacherTest;
 
 public class TestExecutor {
 
+	SystemClass systemHeavy;
+	SystemClass systemLight;
+	SystemClass systemMedium;
 
-	@Test
-	public void testTestCasesFormat() {
 
-		SystemClass systemHeavy= new SystemClass("HeavySystem");
-		//Adding Heavy test cases
-
+	@Before
+	public void setup() {
+		//Elasticity for the Light Resource
+		ElasticityModelClass elasModelLight= new ElasticityModelClass();
+		elasModelLight.elasticityID= "OpenViduLightElastModel";
+		elasModelLight.elasticity=Integer.MAX_VALUE;
+		elasModelLight.elasticityCost=0.0;
+		//Elasticity for the medium resource
+		ElasticityModelClass elasModelMedium= new ElasticityModelClass();
+		elasModelLight.elasticityID= "OpenViduMediumElastModel";
+		elasModelMedium.elasticity=5;
+		elasModelMedium.elasticityCost=5.0;
+		//Elasticity for the Heavy resource
+		ElasticityModelClass elasModelHeavy= new ElasticityModelClass();
+		elasModelLight.elasticityID= "OpenViduHeavyElastModel";
+		elasModelHeavy.elasticity=1;
+		elasModelHeavy.elasticityCost=Double.MAX_VALUE;
+		//Different Resources
+		ResourceClass openvidu = new ResourceClass();
+		openvidu.resourceID = "Openvidu";
+		openvidu.reemplazable=new LinkedList<ResourceClass>();
+		//Light Resource
+		ResourceClass openviduLight = new ResourceClass();
+		openviduLight.resourceID = "OpenviduLight";
+		openviduLight.hierarchyParent=openvidu;
+		openviduLight.reemplazable=new LinkedList<ResourceClass>();
+		openviduLight.elasticityModel=elasModelLight;
+		//Medium Resource
+		ResourceClass openviduMedium = new ResourceClass();
+		openviduMedium.resourceID = "OpenviduMedium";
+		openviduMedium.hierarchyParent=openvidu;
+		openviduMedium.reemplazable=new LinkedList<ResourceClass>();
+		openviduMedium.elasticityModel=elasModelMedium;
+		//Heavy Resource
+		ResourceClass openviduHeavy = new ResourceClass();
+		openviduHeavy.resourceID = "OpenviduHeavy";
+		openviduHeavy.hierarchyParent=openvidu;
+		openviduHeavy.reemplazable=new LinkedList<ResourceClass>();
+		openviduHeavy.elasticityModel=elasModelHeavy;
+		//Reemplazable for the parent;
+		openvidu.reemplazable.add(openviduLight);
+		openvidu.reemplazable.add(openviduMedium);
+		openvidu.reemplazable.add(openviduHeavy);
+		//Reemplazable Methods for the Light
+		openviduLight.reemplazable.add(openviduMedium);
+		openviduLight.reemplazable.add(openviduHeavy);
+		//Reemplazable Methods for the Medium
+		openviduMedium.reemplazable.add(openviduHeavy);
+		SystemClass systemLight= new SystemClass("LightSystem");
+		systemLight.resources.add(openviduLight);
 		//AccessMode for the Light Resources
-
-		AccessModeClass accessModeHeavy = new AccessModeClass();
+		AccessModeClass accessModeLight = new AccessModeClass();
+		accessModeLight.sharing=true;
+		accessModeLight.concurrency=4;
+		accessModeLight.resource=openviduLight;
+		accessModeLight.typeofAccessMode=AccessModeClass.type.READONLY;
 		//End AccessMode
-
+		//Adding Light TestCases
+		systemLight.testcases.add(new  TestCaseClass("teacherCourseMainTest",CourseTeacherTest.class,accessModeLight ));
+		systemLight.testcases.add(new  TestCaseClass("studentCourseMainTest",CourseStudentTest.class,accessModeLight ));
+		systemLight.testcases.add(new  TestCaseClass("forumLoadEntriesTest",LoggedForumTest.class,accessModeLight ));		
+		systemLight.testcases.add(new  TestCaseClass("spiderLoggedTest",LoggedLinksTests.class,accessModeLight ));
+		systemLight.testcases.add(new  TestCaseClass("loginTest",UserTest.class,accessModeLight ));
+		//End Adding Light Test Cases
+		SystemClass systemMedium= new SystemClass("MediumSystem");
+		systemMedium.resources.add(openviduMedium);
+		//AccessMode for the Light Resources
+		AccessModeClass accessModeMedium = new AccessModeClass();
+		accessModeMedium.sharing=false;
+		accessModeMedium.concurrency=1;
+		accessModeMedium.resource=openviduMedium;
+		accessModeMedium.typeofAccessMode=AccessModeClass.type.READWRITE;
+		//End AccessMode
+		//Adding Medium test cases
+		systemMedium.testcases.add(new  TestCaseClass("teacherCreateAndDeleteCourseTest",CourseTeacherTest.class,accessModeMedium ));
+		systemMedium.testcases.add(new  TestCaseClass("teacherEditCourseValues",CourseTeacherTest.class ,accessModeMedium));
+		systemMedium.testcases.add(new  TestCaseClass("teacherDeleteCourseTest",CourseTeacherTest.class,accessModeMedium ));
+		systemMedium.testcases.add(new  TestCaseClass("forumNewEntryTest",LoggedForumTest.class,accessModeMedium ));
+		systemMedium.testcases.add(new  TestCaseClass("forumNewCommentTest",LoggedForumTest.class,accessModeMedium ));
+		systemMedium.testcases.add(new  TestCaseClass("forumNewReply2CommentTest",LoggedForumTest.class,accessModeMedium ));
+		systemMedium.testcases.add(new  TestCaseClass("courseRestOperations",FullTeachingTestE2EREST.class,accessModeMedium ));
+		systemMedium.testcases.add(new  TestCaseClass("courseInfoRestOperations",FullTeachingTestE2EREST.class,accessModeMedium ));
+		systemMedium.testcases.add(new  TestCaseClass("sessionRestOperations",FullTeachingTestE2EREST.class,accessModeMedium ));
+		systemMedium.testcases.add(new  TestCaseClass("forumRestOperations",FullTeachingTestE2EREST.class,accessModeMedium ));
+		systemMedium.testcases.add(new  TestCaseClass("filesRestOperations",FullTeachingTestE2EREST.class,accessModeMedium ));
+		//End Adding Medium Test Cases
+		SystemClass systemHeavy= new SystemClass("HeavySystem");
+		systemHeavy.resources.add(openviduHeavy);
+		//AccessMode for the Light Resources
+		AccessModeClass accessModeHeavy = new AccessModeClass();
+		accessModeHeavy.sharing=false;
+		accessModeHeavy.concurrency=1;
+		accessModeHeavy.resource=openviduHeavy;
+		accessModeHeavy.typeofAccessMode=AccessModeClass.type.READWRITE;
+		//End AccessMode
+		//Adding Heavy test cases
 		systemHeavy.testcases.add(new  TestCaseClass("oneToOneChatInSessionChrome",FullTeachingTestE2EChat.class,accessModeHeavy ));
 		systemHeavy.testcases.add(new  TestCaseClass("oneToOneVideoAudioSessionChrome",FullTeachingTestE2EVideoSession.class,accessModeHeavy ));
 		systemHeavy.testcases.add(new  TestCaseClass("sessionTest",LoggedVideoSession.class,accessModeHeavy ));
 		systemHeavy.testcases.add(new  TestCaseClass("attendersRestOperations",FullTeachingTestE2EREST.class,accessModeHeavy ));
+		//End Adding Heavy Test Cases
+	}
+
+
+
+	@Test
+	public void testTestCasesFormat() {
 
 		RetorchExecutor executor =  new RetorchExecutor();
 		String output=executor.getFormattedTestCases(systemHeavy.testcases);
@@ -60,40 +156,11 @@ public class TestExecutor {
 
 		RetorchExecutor executor =  new RetorchExecutor();
 
-		ElasticityModelClass elasModelHeavy= new ElasticityModelClass();
-		elasModelHeavy.elasticityID= "OpenViduHeavyElastModel";
-		elasModelHeavy.elasticity=1;
-		elasModelHeavy.elasticityCost=Double.MAX_VALUE;
-		//Different Resources
-		ResourceClass openviduHeavy = new ResourceClass();
-		openviduHeavy.resourceID = "OpenviduHeavy";
-		openviduHeavy.reemplazable=new LinkedList<ResourceClass>();
-		openviduHeavy.elasticityModel=elasModelHeavy;
-
-
-		SystemClass systemHeavy= new SystemClass("HeavySystem");
-		systemHeavy.resources.add(openviduHeavy);
-		//Adding Heavy test cases
-
-		//AccessMode for the Light Resources
-
-		AccessModeClass accessModeHeavy = new AccessModeClass();
-		accessModeHeavy.sharing=false;
-		accessModeHeavy.concurrency=1;
-		accessModeHeavy.resource=openviduHeavy;
-		accessModeHeavy.typeofAccessMode=AccessModeClass.type.READWRITE;
-
-		//End AccessMode
-
-		systemHeavy.testcases.add(new  TestCaseClass("oneToOneChatInSessionChrome",FullTeachingTestE2EChat.class,accessModeHeavy ));
-		systemHeavy.testcases.add(new  TestCaseClass("oneToOneVideoAudioSessionChrome",FullTeachingTestE2EVideoSession.class,accessModeHeavy ));
-		systemHeavy.testcases.add(new  TestCaseClass("sessionTest",LoggedVideoSession.class,accessModeHeavy ));
-		systemHeavy.testcases.add(new  TestCaseClass("attendersRestOperations",FullTeachingTestE2EREST.class,accessModeHeavy ));
 
 		int outputconcurrency=executor.getConcurrency(systemHeavy.testcases);
 		int expectedconcurrency= 0;
 		assertEquals(expectedconcurrency, outputconcurrency);
-		
+
 
 
 	}
@@ -101,48 +168,7 @@ public class TestExecutor {
 	@Test
 	public void testExecutorgetMvnScript() {
 
-		ResourceClass openvidu = new ResourceClass();
-		openvidu.resourceID = "Openvidu";
-		openvidu.reemplazable=new LinkedList<ResourceClass>();
-
-
-		//Diferent Elasticity Models
-
-		ElasticityModelClass elasModelHeavy= new ElasticityModelClass();
-		elasModelHeavy.elasticityID= "OpenViduHeavyElastModel";
-		elasModelHeavy.elasticity=1;
-		elasModelHeavy.elasticityCost=Double.MAX_VALUE;
-		//Different Resources
-		ResourceClass openviduHeavy = new ResourceClass();
-		openviduHeavy.resourceID = "OpenviduHeavy";
-		openviduHeavy.hierarchyParent=openvidu;
-		openviduHeavy.reemplazable=new LinkedList<ResourceClass>();
-		openviduHeavy.elasticityModel=elasModelHeavy;
-
-
 		RetorchExecutor executor =  new RetorchExecutor();
-
-		SystemClass systemHeavy= new SystemClass("HeavySystem");
-		systemHeavy.resources.add(openviduHeavy);
-		//Adding Heavy test cases
-
-		//AccessMode for the Light Resources
-
-		AccessModeClass accessModeHeavy = new AccessModeClass();
-		accessModeHeavy.sharing=false;
-		accessModeHeavy.concurrency=1;
-		accessModeHeavy.resource=openviduHeavy;
-		accessModeHeavy.typeofAccessMode=AccessModeClass.type.READWRITE;
-
-		//End AccessMode
-
-		systemHeavy.testcases.add(new  TestCaseClass("oneToOneChatInSessionChrome",FullTeachingTestE2EChat.class,accessModeHeavy ));
-		systemHeavy.testcases.add(new  TestCaseClass("oneToOneVideoAudioSessionChrome",FullTeachingTestE2EVideoSession.class,accessModeHeavy ));
-		systemHeavy.testcases.add(new  TestCaseClass("sessionTest",LoggedVideoSession.class,accessModeHeavy ));
-		systemHeavy.testcases.add(new  TestCaseClass("attendersRestOperations",FullTeachingTestE2EREST.class,accessModeHeavy ));
-
-		executor.retorchSystems.add(systemHeavy);
-
 		String expectedOutput = "mvn -Dapp.url=https://localhost:5001/ -Dtest=FullTeachingTestE2EChat#oneToOneChatInSessionChrome,"
 				+ "FullTeachingTestE2EVideoSession#oneToOneVideoAudioSessionChrome,LoggedVideoSession#sessionTest,"
 				+ "FullTeachingTestE2EREST#attendersRestOperations -B -DforkCount=0 test\r\n" ;
@@ -156,175 +182,20 @@ public class TestExecutor {
 
 
 	@Test 
- public void testExecutorGenerateMavenCode() {
-
-
+	public void testExecutorGenerateMavenCode() {
 
 		LinkedList<InterTestOrchestrationScript> outputExecutor;
 
-		//Diferent Elasticity Models
-
-		ElasticityModelClass elasModelLight= new ElasticityModelClass();
-		elasModelLight.elasticityID= "OpenViduLightElastModel";
-		elasModelLight.elasticity=Integer.MAX_VALUE;
-		elasModelLight.elasticityCost=0.0;
-
-
-		ElasticityModelClass elasModelMedium= new ElasticityModelClass();
-		elasModelLight.elasticityID= "OpenViduMediumElastModel";
-		elasModelMedium.elasticity=5;
-		elasModelMedium.elasticityCost=5.0;
-
-		ElasticityModelClass elasModelHeavy= new ElasticityModelClass();
-		elasModelLight.elasticityID= "OpenViduHeavyElastModel";
-		elasModelHeavy.elasticity=1;
-		elasModelHeavy.elasticityCost=Double.MAX_VALUE;
-
-
-		//Different Resources
-
-		ResourceClass openvidu = new ResourceClass();
-		openvidu.resourceID = "Openvidu";
-		openvidu.reemplazable=new LinkedList<ResourceClass>();
-
-
-		ResourceClass openviduLight = new ResourceClass();
-		openviduLight.resourceID = "OpenviduLight";
-		openviduLight.hierarchyParent=openvidu;
-		openviduLight.reemplazable=new LinkedList<ResourceClass>();
-		openviduLight.elasticityModel=elasModelLight;
-
-
-		ResourceClass openviduMedium = new ResourceClass();
-		openviduMedium.resourceID = "OpenviduMedium";
-		openviduMedium.hierarchyParent=openvidu;
-		openviduMedium.reemplazable=new LinkedList<ResourceClass>();
-		openviduMedium.elasticityModel=elasModelMedium;
-
-
-		ResourceClass openviduHeavy = new ResourceClass();
-		openviduHeavy.resourceID = "OpenviduHeavy";
-		openviduHeavy.hierarchyParent=openvidu;
-		openviduHeavy.reemplazable=new LinkedList<ResourceClass>();
-		openviduHeavy.elasticityModel=elasModelHeavy;
-
-
-		//Reemplazable clasess;
-
-		openvidu.reemplazable.add(openviduLight);
-		openvidu.reemplazable.add(openviduMedium);
-		openvidu.reemplazable.add(openviduHeavy);
-
-		openviduLight.reemplazable.add(openviduMedium);
-		openviduLight.reemplazable.add(openviduHeavy);
-
-		openviduMedium.reemplazable.add(openviduHeavy);
-
-
-
 		RetorchExecutor executor =  new RetorchExecutor();
 
-
-		SystemClass systemLight= new SystemClass("LightSystem");
-		systemLight.resources.add(openviduLight);
-		//AccessMode for the Light Resources
-
-		AccessModeClass accessModeLight = new AccessModeClass();
-		accessModeLight.sharing=true;
-		accessModeLight.concurrency=4;
-		accessModeLight.resource=openviduLight;
-		accessModeLight.typeofAccessMode=AccessModeClass.type.READONLY;
-
-		//End AccessMode
-
-		//Adding Light TestCases
-		systemLight.testcases.add(new  TestCaseClass("teacherCourseMainTest",CourseTeacherTest.class,accessModeLight ));
-		systemLight.testcases.add(new  TestCaseClass("studentCourseMainTest",CourseStudentTest.class,accessModeLight ));
-		systemLight.testcases.add(new  TestCaseClass("forumLoadEntriesTest",LoggedForumTest.class,accessModeLight ));		
-		systemLight.testcases.add(new  TestCaseClass("spiderLoggedTest",LoggedLinksTests.class,accessModeLight ));
-		systemLight.testcases.add(new  TestCaseClass("loginTest",UserTest.class,accessModeLight ));
-
-
-
-
-
-		//End Adding Light Test Cases
-
-		SystemClass systemMedium= new SystemClass("MediumSystem");
-		systemMedium.resources.add(openviduMedium);
-
-		//AccessMode for the Light Resources
-
-		AccessModeClass accessModeMedium = new AccessModeClass();
-		accessModeMedium.sharing=false;
-		accessModeMedium.concurrency=1;
-		accessModeMedium.resource=openviduMedium;
-		accessModeMedium.typeofAccessMode=AccessModeClass.type.READWRITE;
-
-		//End AccessMode
-
-
-
-
-		//Adding Medium test cases
-		systemMedium.testcases.add(new  TestCaseClass("teacherCreateAndDeleteCourseTest",CourseTeacherTest.class,accessModeMedium ));
-		systemMedium.testcases.add(new  TestCaseClass("teacherEditCourseValues",CourseTeacherTest.class ,accessModeMedium));
-		systemMedium.testcases.add(new  TestCaseClass("teacherDeleteCourseTest",CourseTeacherTest.class,accessModeMedium ));
-		systemMedium.testcases.add(new  TestCaseClass("forumNewEntryTest",LoggedForumTest.class,accessModeMedium ));
-		systemMedium.testcases.add(new  TestCaseClass("forumNewCommentTest",LoggedForumTest.class,accessModeMedium ));
-		systemMedium.testcases.add(new  TestCaseClass("forumNewReply2CommentTest",LoggedForumTest.class,accessModeMedium ));
-		systemMedium.testcases.add(new  TestCaseClass("courseRestOperations",FullTeachingTestE2EREST.class,accessModeMedium ));
-		systemMedium.testcases.add(new  TestCaseClass("courseInfoRestOperations",FullTeachingTestE2EREST.class,accessModeMedium ));
-		systemMedium.testcases.add(new  TestCaseClass("sessionRestOperations",FullTeachingTestE2EREST.class,accessModeMedium ));
-		systemMedium.testcases.add(new  TestCaseClass("forumRestOperations",FullTeachingTestE2EREST.class,accessModeMedium ));
-		systemMedium.testcases.add(new  TestCaseClass("filesRestOperations",FullTeachingTestE2EREST.class,accessModeMedium ));
-
-		//End Adding Medium Test Cases
-
-		SystemClass systemHeavy= new SystemClass("HeavySystem");
-		systemHeavy.resources.add(openviduHeavy);
-
-		//AccessMode for the Light Resources
-
-		AccessModeClass accessModeHeavy = new AccessModeClass();
-		accessModeHeavy.sharing=false;
-		accessModeHeavy.concurrency=1;
-		accessModeHeavy.resource=openviduHeavy;
-		accessModeHeavy.typeofAccessMode=AccessModeClass.type.READWRITE;
-
-		//End AccessMode
-
-
-		//Adding Heavy test cases
-
-		systemHeavy.testcases.add(new  TestCaseClass("oneToOneChatInSessionChrome",FullTeachingTestE2EChat.class,accessModeHeavy ));
-		systemHeavy.testcases.add(new  TestCaseClass("oneToOneVideoAudioSessionChrome",FullTeachingTestE2EVideoSession.class,accessModeHeavy ));
-		systemHeavy.testcases.add(new  TestCaseClass("sessionTest",LoggedVideoSession.class,accessModeHeavy ));
-		systemHeavy.testcases.add(new  TestCaseClass("attendersRestOperations",FullTeachingTestE2EREST.class,accessModeHeavy ));
-
-		//End Adding Heavy Test Cases
-
-
-
 		executor.retorchSystems.add(systemLight);
-
 		executor.retorchSystems.add(systemMedium);
-
 		executor.retorchSystems.add(systemHeavy);
-
 
 		outputExecutor=(LinkedList<InterTestOrchestrationScript>) executor.generateMavenScripts();
 
-
-
-
-
-
-
-
-
 		//Here the expected output of our system
-		LinkedList<InterTestOrchestrationScript> expectedoutput = new LinkedList<InterTestOrchestrationScript>();
+		LinkedList<InterTestOrchestrationScript> expectedoutput = new LinkedList<>();
 
 		InterTestOrchestrationScript scriptTestsLight = new InterTestOrchestrationScript();
 		scriptTestsLight.mavenCommand= "mvn -Dapp.url=https://localhost:5001/ -Dtest=CourseTeacherTest#teacherCourseMainTest,"
@@ -369,11 +240,6 @@ public class TestExecutor {
 		if (one.size()!=two.size()||!one.containsAll(two)) {
 			return false;
 		}
-
-
-
-
-
 		return true;
 
 
