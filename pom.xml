@@ -36,11 +36,23 @@
     <artifactId>javaparser-core</artifactId>
     <version>3.0.0</version>
 </dependency>
+
+   <!--OLD  Package used to analyze and get the Java classes  -->
 <dependency>
     <groupId>com.google.guava</groupId>
     <artifactId>guava</artifactId>
-    <version>12.0</version>
+    <version>14.0</version>
 </dependency>
+   <!--END OLDPackage used to analyze and get the Java classes  -->
+    <!--Package used to analyze and get the Java classes  -->
+<dependency>
+    <groupId>org.reflections</groupId>
+    <artifactId>reflections</artifactId>
+    <version>0.9.10</version>
+</dependency>
+ <!--Package used to analyze and get the Java classes  -->
+
+
 
 <dependency>
   <groupId>junit</groupId>

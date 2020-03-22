@@ -38,7 +38,7 @@ public class RetorchExecutor {
 
 		for (SystemClass systemretorch : retorchSystems) {
 
-			for (TestCaseClass tc : systemretorch.testcases) {
+			for (TestCaseClass tc : systemretorch.tGroup) {
 				String testName=tc.name;
 				testClass=tc.testcClass;
 				System.out.println("running the tests from MyRunner: " + testClass);
@@ -100,10 +100,10 @@ public class RetorchExecutor {
 		strBuilder.append(application);
 		String arguments ="-Dapp.url=https://localhost:5001/ ";
 		strBuilder.append(arguments);
-		strBuilder.append(this.getFormattedTestCases(system.testcases));
+		strBuilder.append(this.getFormattedTestCases(system.tGroup));
 		String option="-B ";
 		strBuilder.append(option);
-		String parallelism=String.format("-DforkCount=%d ", getConcurrency(system.testcases));		
+		String parallelism=String.format("-DforkCount=%d ", getConcurrency(system.tGroup));		
 		strBuilder.append(parallelism);
 		String endScript="test\r\n" ;
 		strBuilder.append(endScript);

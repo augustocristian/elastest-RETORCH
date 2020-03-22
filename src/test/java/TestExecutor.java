@@ -81,7 +81,7 @@ public class TestExecutor {
 		openviduLight.reemplazable.add(openviduHeavy);
 		//Reemplazable Methods for the Medium
 		openviduMedium.reemplazable.add(openviduHeavy);
-		SystemClass systemLight= new SystemClass("LightSystem");
+		systemLight= new SystemClass("LightSystem");
 		systemLight.resources.add(openviduLight);
 		//AccessMode for the Light Resources
 		AccessModeClass accessModeLight = new AccessModeClass();
@@ -91,13 +91,13 @@ public class TestExecutor {
 		accessModeLight.typeofAccessMode=AccessModeClass.type.READONLY;
 		//End AccessMode
 		//Adding Light TestCases
-		systemLight.testcases.add(new  TestCaseClass("teacherCourseMainTest",CourseTeacherTest.class,accessModeLight ));
-		systemLight.testcases.add(new  TestCaseClass("studentCourseMainTest",CourseStudentTest.class,accessModeLight ));
-		systemLight.testcases.add(new  TestCaseClass("forumLoadEntriesTest",LoggedForumTest.class,accessModeLight ));		
-		systemLight.testcases.add(new  TestCaseClass("spiderLoggedTest",LoggedLinksTests.class,accessModeLight ));
-		systemLight.testcases.add(new  TestCaseClass("loginTest",UserTest.class,accessModeLight ));
+		systemLight.tGroup.add(new  TestCaseClass("teacherCourseMainTest",CourseTeacherTest.class,accessModeLight ));
+		systemLight.tGroup.add(new  TestCaseClass("studentCourseMainTest",CourseStudentTest.class,accessModeLight ));
+		systemLight.tGroup.add(new  TestCaseClass("forumLoadEntriesTest",LoggedForumTest.class,accessModeLight ));		
+		systemLight.tGroup.add(new  TestCaseClass("spiderLoggedTest",LoggedLinksTests.class,accessModeLight ));
+		systemLight.tGroup.add(new  TestCaseClass("loginTest",UserTest.class,accessModeLight ));
 		//End Adding Light Test Cases
-		SystemClass systemMedium= new SystemClass("MediumSystem");
+		systemMedium= new SystemClass("MediumSystem");
 		systemMedium.resources.add(openviduMedium);
 		//AccessMode for the Light Resources
 		AccessModeClass accessModeMedium = new AccessModeClass();
@@ -107,19 +107,19 @@ public class TestExecutor {
 		accessModeMedium.typeofAccessMode=AccessModeClass.type.READWRITE;
 		//End AccessMode
 		//Adding Medium test cases
-		systemMedium.testcases.add(new  TestCaseClass("teacherCreateAndDeleteCourseTest",CourseTeacherTest.class,accessModeMedium ));
-		systemMedium.testcases.add(new  TestCaseClass("teacherEditCourseValues",CourseTeacherTest.class ,accessModeMedium));
-		systemMedium.testcases.add(new  TestCaseClass("teacherDeleteCourseTest",CourseTeacherTest.class,accessModeMedium ));
-		systemMedium.testcases.add(new  TestCaseClass("forumNewEntryTest",LoggedForumTest.class,accessModeMedium ));
-		systemMedium.testcases.add(new  TestCaseClass("forumNewCommentTest",LoggedForumTest.class,accessModeMedium ));
-		systemMedium.testcases.add(new  TestCaseClass("forumNewReply2CommentTest",LoggedForumTest.class,accessModeMedium ));
-		systemMedium.testcases.add(new  TestCaseClass("courseRestOperations",FullTeachingTestE2EREST.class,accessModeMedium ));
-		systemMedium.testcases.add(new  TestCaseClass("courseInfoRestOperations",FullTeachingTestE2EREST.class,accessModeMedium ));
-		systemMedium.testcases.add(new  TestCaseClass("sessionRestOperations",FullTeachingTestE2EREST.class,accessModeMedium ));
-		systemMedium.testcases.add(new  TestCaseClass("forumRestOperations",FullTeachingTestE2EREST.class,accessModeMedium ));
-		systemMedium.testcases.add(new  TestCaseClass("filesRestOperations",FullTeachingTestE2EREST.class,accessModeMedium ));
+		systemMedium.tGroup.add(new  TestCaseClass("teacherCreateAndDeleteCourseTest",CourseTeacherTest.class,accessModeMedium ));
+		systemMedium.tGroup.add(new  TestCaseClass("teacherEditCourseValues",CourseTeacherTest.class ,accessModeMedium));
+		systemMedium.tGroup.add(new  TestCaseClass("teacherDeleteCourseTest",CourseTeacherTest.class,accessModeMedium ));
+		systemMedium.tGroup.add(new  TestCaseClass("forumNewEntryTest",LoggedForumTest.class,accessModeMedium ));
+		systemMedium.tGroup.add(new  TestCaseClass("forumNewCommentTest",LoggedForumTest.class,accessModeMedium ));
+		systemMedium.tGroup.add(new  TestCaseClass("forumNewReply2CommentTest",LoggedForumTest.class,accessModeMedium ));
+		systemMedium.tGroup.add(new  TestCaseClass("courseRestOperations",FullTeachingTestE2EREST.class,accessModeMedium ));
+		systemMedium.tGroup.add(new  TestCaseClass("courseInfoRestOperations",FullTeachingTestE2EREST.class,accessModeMedium ));
+		systemMedium.tGroup.add(new  TestCaseClass("sessionRestOperations",FullTeachingTestE2EREST.class,accessModeMedium ));
+		systemMedium.tGroup.add(new  TestCaseClass("forumRestOperations",FullTeachingTestE2EREST.class,accessModeMedium ));
+		systemMedium.tGroup.add(new  TestCaseClass("filesRestOperations",FullTeachingTestE2EREST.class,accessModeMedium ));
 		//End Adding Medium Test Cases
-		SystemClass systemHeavy= new SystemClass("HeavySystem");
+		systemHeavy= new SystemClass("HeavySystem");
 		systemHeavy.resources.add(openviduHeavy);
 		//AccessMode for the Light Resources
 		AccessModeClass accessModeHeavy = new AccessModeClass();
@@ -129,10 +129,10 @@ public class TestExecutor {
 		accessModeHeavy.typeofAccessMode=AccessModeClass.type.READWRITE;
 		//End AccessMode
 		//Adding Heavy test cases
-		systemHeavy.testcases.add(new  TestCaseClass("oneToOneChatInSessionChrome",FullTeachingTestE2EChat.class,accessModeHeavy ));
-		systemHeavy.testcases.add(new  TestCaseClass("oneToOneVideoAudioSessionChrome",FullTeachingTestE2EVideoSession.class,accessModeHeavy ));
-		systemHeavy.testcases.add(new  TestCaseClass("sessionTest",LoggedVideoSession.class,accessModeHeavy ));
-		systemHeavy.testcases.add(new  TestCaseClass("attendersRestOperations",FullTeachingTestE2EREST.class,accessModeHeavy ));
+		systemHeavy.tGroup.add(new  TestCaseClass("oneToOneChatInSessionChrome",FullTeachingTestE2EChat.class,accessModeHeavy ));
+		systemHeavy.tGroup.add(new  TestCaseClass("oneToOneVideoAudioSessionChrome",FullTeachingTestE2EVideoSession.class,accessModeHeavy ));
+		systemHeavy.tGroup.add(new  TestCaseClass("sessionTest",LoggedVideoSession.class,accessModeHeavy ));
+		systemHeavy.tGroup.add(new  TestCaseClass("attendersRestOperations",FullTeachingTestE2EREST.class,accessModeHeavy ));
 		//End Adding Heavy Test Cases
 	}
 
@@ -142,7 +142,7 @@ public class TestExecutor {
 	public void testTestCasesFormat() {
 
 		RetorchExecutor executor =  new RetorchExecutor();
-		String output=executor.getFormattedTestCases(systemHeavy.testcases);
+		String output=executor.getFormattedTestCases(systemHeavy.tGroup);
 		String expectedOutput = "-Dtest=FullTeachingTestE2EChat#oneToOneChatInSessionChrome,"
 				+ "FullTeachingTestE2EVideoSession#oneToOneVideoAudioSessionChrome,LoggedVideoSession#sessionTest,"
 				+ "FullTeachingTestE2EREST#attendersRestOperations ";
@@ -157,7 +157,7 @@ public class TestExecutor {
 		RetorchExecutor executor =  new RetorchExecutor();
 
 
-		int outputconcurrency=executor.getConcurrency(systemHeavy.testcases);
+		int outputconcurrency=executor.getConcurrency(systemHeavy.tGroup);
 		int expectedconcurrency= 0;
 		assertEquals(expectedconcurrency, outputconcurrency);
 
