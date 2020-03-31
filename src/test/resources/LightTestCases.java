@@ -4,25 +4,24 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 
 @Ignore	public class LightTestCases {
 
 	    @Test
-	    public void testOne() {
+	    public void testOneL() {
 	  
 	        assertEquals(true, true);
 	    }
 	    
 	    @Test
-	    public void testTwo() {
+	    public void testTwoL() {
 	  
 	        assertEquals(true, true);
 	    }
 	    
 	    @Test
-	    public void testThree() {
+	    public void testThreeL() {
 	       
 	        assertEquals(true, true);
 	    }

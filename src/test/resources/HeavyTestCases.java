@@ -4,24 +4,23 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 @Ignore	public class HeavyTestCases {
 
 	    @Test
-	    public void testOne() {
+	    public void testOneH() {
 	     
 	        assertEquals(true, true);
 	    }
 	    
 	    @Test
-	    public void testTwo() {
+	    public void testTwoH() {
 	      
 	        assertEquals(true, true);
 	    }
 	    
 	    @Test
-	    public void testThree() {
+	    public void testThreeH() {
 	     
 	        assertEquals(true, true);
 	    }

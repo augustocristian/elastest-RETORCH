@@ -9,19 +9,19 @@ import org.junit.Test;
 @Ignore	public class MediumTestCases {
 
 	    @Test
-	    public void testOne() {
+	    public void testOneM() {
 	     
 	        assertEquals(true, true);
 	    }
 	    
 	    @Test
-	    public void testTwo() {
+	    public void testTwoM() {
 	     
 	        assertEquals(true, true);
 	    }
 	    
 	    @Test
-	    public void testThree() {
+	    public void testThreeM() {
 	   
 	        assertEquals(true, true);
 	    }
