@@ -1,42 +1,29 @@
 package main.java.executor;
 
-import java.io.IOException;
-import java.util.Set;
-
-import org.reflections.Reflections;
-
-import com.google.common.reflect.ClassPath;
-
-import main.java.tags.AccessMode;
-import main.java.tags.ElasticityModel;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 public class RetorchClassifier {
 
-
-
-	public void getAllMethods () throws IOException {
-
-	//	final ClassLoader loader = Thread.currentThread().getContextClassLoader();
-		Reflections ref = new Reflections("main");
-        for (Class<?> cl : ref.getTypesAnnotatedWith(AccessMode.class)) {
-            
-            System.out.printf("Found class: %s, with meta nam",
-                    cl.getSimpleName());
-        }
-    
 		
-		
-		/*
-		 * for (final ClassPath.ClassInfo info :
-		 * ClassPath.from(loader).getTopLevelClasses()) { if
-		 * (info.getName().startsWith("test.resources")) { final Class<?> clazz =
-		 * info.load(); // do something with your clazz } }
-		 */
-		//Reflections reflections = new Reflections("test.resources");
-		//Set<Class<? extends Object>> allClasses = 
-			//	reflections.getSubTypesOf(Object.class);
+		   
+	public List<Method>  getClassMethods (Class testClass) {
 
-	//	System.out.print(allClasses.toString());	
+		    // Get the methods
+		    Method[] methods = testClass.getDeclaredMethods();
+		    LinkedList<Method> output = new LinkedList<Method>();
+		    // Loop through the methods and print out their names
+		    for (Method method : methods) {
+		      System.out.println(method.getName());
+		      output.add(method);
+		    }
+		
+		    return output;
+		   
+		    
+		
 		
 	}
 
