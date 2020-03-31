@@ -68,7 +68,7 @@ public class TestClassifier {
 		namesMethods.add("testTwoM");
 		namesMethods.add("testThreeM");
 		
-		List<Method> listMethods= classifier.getPackageMethods ("test.resources");
+		List<Method> listMethods= classifier.getPackageMethods ("/test/resources");
 		
 		assertEquals(true, this.containsAllTestCases(namesMethods, listMethods));
 		assertEquals(true,listMethods.size()==namesMethods.size());
